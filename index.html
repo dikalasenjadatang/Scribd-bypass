@@ -1,0 +1,72 @@
+<html lang ="en">
+<meta charset="utf-8">
+<meta authokr="Mas Lian">
+<meta content="scribd-bypasser, bypasser, scribd">
+<title>Scribd Bypasser</title>
+
+<body>
+	<link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrapper" style="background-color: #1d7781">
+        <a class="brand-logo center"
+          ><img src="./icons/scribd.png" style="width: 100px"
+        /></a>
+      </div>
+    </nav>
+    <ul></ul>
+    <div class="container">
+      <form>
+        <label>URL</label>
+        <input
+          type="text"
+          id="url"
+          placeholder="Example: https://id.scribd.com/document/17318516/History-Magazine"
+          autofocus
+          required
+        />
+        <div id="action" class="center-align">
+          <button class="waves-effect waves-light btn center" type="submit">
+           Download
+          </button>
+        </div>
+      </form>
+    </div>
+</body>
+
+<script>
+
+
+// ==UserScript==
+// @name            Scribd: Bypasser
+// @description     At one point in our student life we all need to google homework solutions, test preparation stuff and anything else related to subject. One of the search results is, usually, Scribd, where to download the file you either need to upload a bunch of documents, or get a monthly subscription. This extension allows you to bypass all that procedure on the Scribd, so you can download everything for free!
+// @author	    http://github.com/haimaslian
+// @authorname	    Mas Lian
+// @version         1.0.0
+// @license         MIT
+// @released        09-12-2021
+// @updated         09-12-2021
+// @match           *://*.scribd.com/document/*
+// @match           *://www.scribd.com/document/*
+// @run-at          document-end
+// ==/UserScript==
+
+window.onload = function () {
+	document.getElementsByClassName('icon icon-globalnav_upload')[0].style.display = 'none';
+	document.getElementsByClassName('icon_btn_text')[1].innerHTML = "Download";
+
+	var URL = "http://d1.scribdassets.com/ScribdViewer.swf?";
+	var document_id = "document_id=" + window.location.href.split('/')[4];
+
+	var src = document.documentElement.innerHTML;
+	var key = src.substring(src.search("key-"), src.search("\",\"is_searchable"));
+
+	var access_key = "access_key=" + key;
+
+	URL += document_id + "&" + access_key;
+	document.getElementsByTagName('a')[16].setAttribute("href", URL);
+}
